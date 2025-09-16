@@ -15,15 +15,13 @@ class Encrypt {
         String messagePath = args[1];
 
         Deck deck = new Deck(deckPath);
-        List<Message> messages = Message.readMsg(messagePath);
+        Message msg = new Message();
+        msg.setMessage(messagePath);
 
-        // Initialize keystream and generate values
-        Keystream keystream = new Keystream(messages,deck);
+        Keystream keystream = new Keystream(msg.getNumbers(),deck);
 
-        // Encrypt messages
-        String[][] encryptedMessage = encryptMessages(messages, keystream);
+        String[][] encryptedMessage = encryptMessages(msg, keystream);
 
-        // Write encrypted messages to file
         try (PrintWriter writer = new PrintWriter(new FileWriter("encryptedMessage.txt"))) {
             for (int i = 0; i < encryptedMessage.length; i++) {
                 for (int j = 0; j < encryptedMessage[i].length; j++) {
@@ -37,11 +35,12 @@ class Encrypt {
         }
     }
 
-    static String[][] encryptMessages(List<Message> messages, Keystream keystream) {
-        String[][] encryptedMessage = new String[messages.size()][];
+    static String[][] encryptMessages(Message message, Keystream keystream) {
+        List<int[]> numbersList = message.getNumbers();
+        String[][] encryptedMessage = new String[numbersList.size()][];
 
-        for (int i = 0; i < messages.size(); i++) {
-            int[] numbers = messages.get(i).getNumbers();
+        for (int i = 0; i < numbersList.size(); i++) {
+            int[] numbers = numbersList.get(i);  // get the i-th numeric message
             encryptedMessage[i] = new String[numbers.length];
 
             for (int j = 0; j < numbers.length; j++) {
