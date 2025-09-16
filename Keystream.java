@@ -6,26 +6,17 @@ class Keystream {
     int[][] keystreamValues;  //initializing a ragged array representing keystream values
 
     Keystream(List<Message> messages, Deck deck) {
-        this.keystreamValues = keystreamAlgorithm(messages, deck);
-    }
-
-<<<<<<< HEAD
-=======
-    int[][] keystreamAlgorithm(List<Message> messages, Deck deck){
-
         keystreamValues = new int[messages.size()][];  // store the keystream values
 
->>>>>>> 0e8151f055be8788a9ab98f463273d5e005536a8
         for (int i = 0; i < messages.size(); i++) { 
             Message msg = messages.get(i);
             int[] numbers = msg.getNumbers();  // numeric representation
             keystreamValues[i] = new int[numbers.length];
-<<<<<<< HEAD
 
-=======
->>>>>>> 0e8151f055be8788a9ab98f463273d5e005536a8
 
             for (int j = 0; j < numbers.length; j++) {
+
+                while (true) {
 
                     // --- Step 1: Move Joker A (27) ---
                     int jokerIndexA = deck.findIndex(27);
@@ -60,19 +51,15 @@ class Keystream {
                         int[] newDeck = new int[n];
                         int index = 0;
 
-                    // Copy the part from bottomCard to second-to-last card
                         for (int ii = bottomCard; ii < n - 1; ii++) {
                             newDeck[index++] = arr[ii];
                         }
 
-                        // Copy the part from start to just before bottomCard
                         for (int ii = 0; ii < bottomCard; ii++) {
                             newDeck[index++] = arr[ii];
                         }
 
-                        // Last card stays in place
                         newDeck[n - 1] = arr[n - 1];
-
                         deck.setDeck(newDeck);
                     }
 
@@ -83,19 +70,13 @@ class Keystream {
                     int next = deck.getDeck()[count];
 
                     if (next != 27 && next != 28) {
-                        keystreamValues[i][j] = next;
+                        keystreamValues[i][j] = next;  // store keystream value
                         break;
                     }
-<<<<<<< HEAD
                 }
 
-=======
-                
->>>>>>> 0e8151f055be8788a9ab98f463273d5e005536a8
             }
-
         }
-        return keystreamValues;
     }
 
   
