@@ -1,3 +1,77 @@
+/*+----------------------------------------------------------------------
+ ||
+ ||  Class Deck
+ ||
+ ||         Author:  Emily Margaret Foley
+ ||
+ ||        Purpose:  This class represents and manipulates a deck of 28
+ ||                   cards (52 standard cards reduced into 26 values +
+ ||                   2 jokers) as used in the Solitaire cipher. It
+ ||                   provides operations such as joker movements, triple
+ ||                   cut, and count cut, which are core to generating
+ ||                   the keystream values. It also supports initializing
+ ||                   the deck from a file and converting string card
+ ||                   representations into numeric form.
+ ||
+ ||  Inherits From:  None
+ ||
+ ||     Interfaces:  None
+ ||
+ |+-----------------------------------------------------------------------
+ ||
+ ||      Constants:  None
+ ||
+ |+-----------------------------------------------------------------------
+ ||
+ ||   Constructors:  Deck() – Default constructor, initializes an empty
+ ||                              28-card deck.
+ ||
+ ||  Class Methods:  None
+ ||
+ ||  Inst. Methods:  void setDeck(String deckFilePath)
+ ||                        – Reads and sets up the deck from the given
+ ||                          file.
+ ||
+ ||                   int[] getDeck()
+ ||                        – Returns the current deck as an array of ints.
+ ||
+ ||                   private int[] readDeckFile(String deckFilePath)
+ ||                        – Helper method, reads deck contents from file 
+ ||                          and converts card codes (e.g., "AC", "10D") into
+ ||                          numeric values. Returns the initialized deck.
+ ||
+ ||                   private void swap(int i, int j)
+ ||                        – Helper method that swaps two cards in the 
+ ||                          deck at positions i and j.
+ ||
+ ||                   private int findIndex(int value)
+ ||                        – Helper method that finds and returns the index 
+ ||                          of a card with the given value in the deck.
+ ||
+ ||                   private void swapSlice(int i, int j, int k, int l)
+ ||                        – Helper method that earranges deck sections 
+ ||                          as part of the triple cut process.
+ ||
+ ||                   void moveJoker27()
+ ||                        – Moves Joker A (value 27) down one position
+ ||                          in the deck.
+ ||
+ ||                   void moveJoker28()
+ ||                        – Moves Joker B (value 28) down two positions
+ ||                          in the deck.
+ ||
+ ||                   void tripleCut()
+ ||                        – Performs a triple cut around the two jokers.
+ ||
+ ||                   void countCut()
+ ||                        – Performs the count cut using the value of
+ ||                          the bottom card.
+ ||
+ ||                   private int cardToNumber(String card)
+ ||                        – Helper method that maps a string card code
+ ||                          into its corresponding numeric value.
+ ||
+ ++-----------------------------------------------------------------------*/
 import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -17,7 +91,7 @@ class Deck {
         return deck;
     }
 
-    int[] readDeckFile(String deckFilePath) {
+    private int[] readDeckFile(String deckFilePath) {
         File deckFile = new File(deckFilePath);
         boolean deckExists = deckFile.exists();
         if (deckExists == false) {
@@ -48,13 +122,13 @@ class Deck {
     return deck;
     }
 
-    void swap(int i, int j) {
+    private void swap(int i, int j) {
         int first = deck[i];
         deck[i] = deck[j];
         deck[j] = first;
     }
 
-    int findIndex(int value){ 
+    private int findIndex(int value){ 
         for (int i = 0; i < 28; i++) {
             if (deck[i] == value) {
                 return i;  
@@ -63,7 +137,7 @@ class Deck {
         return -1;
     }
 
-    void swapSlice(int i, int j, int k, int l) {
+    private void swapSlice(int i, int j, int k, int l) {
         int[] newDeck = new int[28];
         int index = 0;
 

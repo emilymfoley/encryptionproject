@@ -1,3 +1,61 @@
+/*+----------------------------------------------------------------------
+ ||
+ ||  Class Message
+ ||
+ ||         Author:  Emily Margaret Foley
+ ||
+ ||        Purpose:  This class represents messages to be encrypted or
+ ||                   decrypted. It is responsible for reading raw input
+ ||                   from a file, cleaning the message by removing
+ ||                   non-alphabetical characters and padding with 'X'
+ ||                   as necessary, and converting letters to numeric
+ ||                   representations suitable for processing by the
+ ||                   Solitaire encryption algorithm.
+ ||
+ ||  Inherits From:  None
+ ||
+ ||     Interfaces:  None
+ ||
+ |+-----------------------------------------------------------------------
+ ||
+ ||      Constants:  None
+ ||
+ |+-----------------------------------------------------------------------
+ ||
+ ||   Constructors:  Message() – Default constructor that initializes
+ ||                                empty data structures for storing
+ ||                                cleaned and numeric messages.
+ ||
+ ||  Class Methods:  static List<String> readMsg(String messageFilePath)
+ ||                        – Reads raw text messages from the specified
+ ||                          file. Returns them as a list of strings,
+ ||                          preserving line separation.
+ ||
+ ||  Inst. Methods:  void setMessage(String messageFilePath)
+ ||                        – Reads, cleans, and converts the message from
+ ||                          the file into numeric representation.
+ ||
+ ||                   private List<String> cleanMessage(List<String> rawMessages)
+ ||                        – Helper method, removes all non-alphabetical characters,
+ ||                          converts lowercase to uppercase, and pads
+ ||                          the message to a multiple of 5 letters.
+ ||
+ ||                   private List<int[]> messageToNumbers(List<String> cleanedMessages)
+ ||                        – Helper method, converts cleaned string messages into numeric
+ ||                          arrays (A=1, B=2, …, Z=26).
+ ||
+ ||                   String numberToLetter(int n)
+ ||                        – Converts a numeric value back to its
+ ||                          corresponding letter.
+ ||
+ ||                   List<String> getCleanedMessage()
+ ||                        – Returns the cleaned messages as strings.
+ ||
+ ||                   List<int[]> getNumbers()
+ ||                        – Returns the numeric representations of the
+ ||                          cleaned messages.
+ ||
+ ++-----------------------------------------------------------------------*/
 import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -64,7 +122,7 @@ class Message {
         return messages;
     }
 
-    List<String> cleanMessage(List<String> rawMessages) {
+    private List<String> cleanMessage(List<String> rawMessages) {
         List<String> cleanedMessages = new ArrayList<>();
 
         for (String inputMessage : rawMessages) {
@@ -98,7 +156,7 @@ class Message {
         return cleanedMessages;
     }
 
-    List<int[]> messageToNumbers(List<String> cleanedMessages) {
+    private List<int[]> messageToNumbers(List<String> cleanedMessages) {
         List<int[]> numericMessages = new ArrayList<>();
 
         for (String cleanedMessage : cleanedMessages) {
