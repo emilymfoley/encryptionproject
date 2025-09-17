@@ -13,11 +13,8 @@ class Keystream {
     }
 
     int[][] encryptionAlgorithm(List<int[]> numericMessages, Deck deck){
-
         keystreamValues = new int[numericMessages.size()][];
         for (int i = 0; i < numericMessages.size(); i++) { 
-      
-
             int[] msgNumbers = numericMessages.get(i);       // numeric representation of the i-th message
             keystreamValues[i] = new int[msgNumbers.length];
         
@@ -42,9 +39,6 @@ class Keystream {
 
         return keystreamValues;
     }
-
-    
-
   
     int[][] getValues() {
         return keystreamValues;

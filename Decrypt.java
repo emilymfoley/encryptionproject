@@ -15,10 +15,10 @@ class Decrypt {
         Deck deck = new Deck();
         deck.setDeck(deckPath);
 
-        Message msg = new Message();
-        msg.setMessage(encryptedMsgPath);
+        Message encryptedMsg = new Message();
+        encryptedMsg.setMessage(encryptedMsgPath);
 
-        decryptMessages(deck, msg);
+        decryptMessages(deck, encryptedMsg);
     }
 
     static String numberToLetterString(int n) {

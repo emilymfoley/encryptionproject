@@ -4,7 +4,6 @@ import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.ArrayList;
 
-
 class Message {
     private List<int[]> numericMessage;   // Field declaration of numeric representation of a message
     private List<String> cleanedMessage;  // Field declaration of the message after non-alphabetical characters are removed
@@ -26,12 +25,12 @@ class Message {
 
         if (!file.exists()) { 
             System.out.println("Error: message file not found: " + messageFilePath);
-            return messages;
+            return null;
         }
 
         if (file.length() == 0) {
             System.out.println("Error: message file is empty: " + messageFilePath);
-            return messages;
+            return null;
         }
 
         try (Scanner fileScanner = new Scanner(file)) {
@@ -99,7 +98,6 @@ class Message {
         return cleanedMessages;
     }
 
-
     List<int[]> messageToNumbers(List<String> cleanedMessages) {
         List<int[]> numericMessages = new ArrayList<>();
 
@@ -112,6 +110,10 @@ class Message {
         }
 
         return numericMessages;
+    }
+
+    String numberToLetter(int n) {
+        return String.valueOf((char) ('A' + n - 1));
     }
 
     List<String> getCleanedMessage() {

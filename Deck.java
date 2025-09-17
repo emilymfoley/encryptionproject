@@ -2,26 +2,32 @@ import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException;
 
-
-
 class Deck {
-    private int[] deck;     // stores the 28 cards
-    private File deckFile;  // store deck file reference
+    private int[] deck;     
 
     Deck() {
         this.deck = new int[28];
     }
 
     void setDeck(String deckFilePath){
-        this.deckFile = new File(deckFilePath);
-        readDeckFile();
-
+         this.deck= readDeckFile(deckFilePath);
     }
 
-    void readDeckFile() {
-        if (!deckFile.exists()) {
-            System.out.println("Error: deck file not found: " + deckFile.getName());
-            return;
+    int[] getDeck() {
+        return deck;
+    }
+
+    int[] readDeckFile(String deckFilePath) {
+        File deckFile = new File(deckFilePath);
+        boolean deckExists = deckFile.exists();
+        if (deckExists == false) {
+            System.out.println("Error: deck file not found");
+            return null;
+        }
+
+        if (deckFile.length() == 0) {
+            System.out.println("Error: deck file is empty");
+            return null;
         }
 
         try (Scanner deckScanner = new Scanner(deckFile)) {
@@ -37,19 +43,19 @@ class Deck {
             }
 
         } catch (FileNotFoundException e) {
-            System.out.println("Error reading deck file: " + deckFile.getName());
+            System.out.println("Error reading deck file");
         }
+    return deck;
     }
 
-    
     void swap(int i, int j) {
-        int temp = deck[i];
+        int first = deck[i];
         deck[i] = deck[j];
-        deck[j] = temp;
+        deck[j] = first;
     }
 
     int findIndex(int value){ 
-        for (int i = 0; i < deck.length; i++) {
+        for (int i = 0; i < 28; i++) {
             if (deck[i] == value) {
                 return i;  
             }
@@ -58,8 +64,7 @@ class Deck {
     }
 
     void swapSlice(int i, int j, int k, int l) {
-        int n = 28;
-        int[] newDeck = new int[n];
+        int[] newDeck = new int[28];
         int index = 0;
 
         for (int m = k; m <= l; m++) {
@@ -76,8 +81,8 @@ class Deck {
             newDeck[index++] = deck[m];
         }
 
-        if (l + 1 < n) {
-            for (int m = l + 1; m < n; m++) {
+        if (l + 1 < 28) {
+            for (int m = l + 1; m < 28; m++) {
                 newDeck[index++] = deck[m];
             }
         }
@@ -114,30 +119,23 @@ class Deck {
     }
 
     void countCut(){
-        int[] arr = getDeck();
-        int bottomCard = arr[27];
+        int[] oldDeck = getDeck();
+        int bottomCard = oldDeck[27];
         if (bottomCard != 27 && bottomCard != 28) {
             int[] newDeck = new int[28];
             int index = 0;
 
             for (int ii = bottomCard; ii < 27; ii++) {
-                newDeck[index++] = arr[ii];
+                newDeck[index++] = oldDeck[ii];
             }
 
             for (int ii = 0; ii < bottomCard; ii++) {
-                newDeck[index++] = arr[ii];
+                newDeck[index++] = oldDeck[ii];
             }
 
-            newDeck[27] = arr[27];
+            newDeck[27] = oldDeck[27];
             this.deck = newDeck;
         }
-    }
-
-    void setDeck(int[] newDeck) {
-        if (newDeck == null || newDeck.length != 28) {
-            System.out.println("Deck must have exactly 28 cards.");
-        }
-        this.deck = newDeck;
     }
 
     private int cardToNumber(String card) {
@@ -176,10 +174,6 @@ class Deck {
             default:
                 return 0;
         }
-    }
-
-    int[] getDeck() {
-        return deck;
     }
 
 }

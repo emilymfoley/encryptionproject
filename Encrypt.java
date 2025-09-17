@@ -20,7 +20,6 @@ class Encrypt {
         Message messages = new Message();
         messages.setMessage(messagePath);
 
-
         Keystream keystream = new Keystream();
         keystream.encryptionAlgorithm(messages.getNumbers(), deck);
 
@@ -43,18 +42,18 @@ class Encrypt {
     }
 
     static String[][] encryptMessages(Message message, Keystream keystream) {
-        List<int[]> numbersList = message.getNumbers();
-        String[][] encryptedMessage = new String[numbersList.size()][];
+        List<int[]> msgNumbers = message.getNumbers();
+        String[][] encryptedMessage = new String[msgNumbers.size()][];
 
-        for (int i = 0; i < numbersList.size(); i++) {
-            int[] numbers = numbersList.get(i); 
+        for (int i = 0; i < msgNumbers.size(); i++) {
+            int[] numbers = msgNumbers.get(i); 
             encryptedMessage[i] = new String[numbers.length];
 
             for (int j = 0; j < numbers.length; j++) {
                 int encryptedNumbers = numbers[j] + keystream.getValues()[i][j];
                 int modSum = encryptedNumbers % 26;
                 if (modSum == 0) modSum = 26;
-                encryptedMessage[i][j] = Utils.numberToLetter(modSum);
+                encryptedMessage[i][j] = message.numberToLetter(modSum);
             }
         }
 
