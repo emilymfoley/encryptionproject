@@ -1,0 +1,45 @@
+/*=============================================================================
+ |   Assignment:  Program #1
+ |       Author:  Emily Foley [emfoley@arizona.edu]
+ |
+ |       Course:  CSC 345, Analysis of Discrete Structures, Fall 2025
+ |   Instructor:  L. McCann
+ | Sect. Leader:  [Your Section Leader's name]
+ |     Due Date:  9/18/25, at the beginning of class
+ |
+ |     Language:  [Java (VSCode, JDK 21)]
+ |     Packages:  None
+ |  Compile/Run:  To compile, type javac *.java to compile all the class files
+ |                together. To run Encrypt.java, type java Encrypt <deckFile> 
+ |                <messageFile>, where <messageFile> contains the message to 
+ |                be encrypted. To run Decrypt.java, use the same command but 
+ |                replace messageFile with the name of the file containing the 
+ |                encrypted message (the Encrypt class uses the file name 
+ |                encryptedMessage.txt).
+ +-----------------------------------------------------------------------------
+ |
+ |  Description:  [Describe the program's goal, IN DETAIL.]
+ |                
+ |        Input:  One .dat file containing an initial permutation of deck cards
+ |                , one .txt file containing the message to be encrypted.
+ |               
+ |
+ |       Output:  [Describe the output that the user should expect the
+ |                 program to produce.]
+ |
+ |   Techniques:  [Names of standard algorithms employed, explanations
+ |                 of why things were done they way they were done, etc.
+ |                 This is the place for technical information that another
+ |                 programmer would like to know.]
+ |
+ |   Required Features Not Included:
+ |                [If the assignment specifies a feature that you were
+ |                 unable to include in the program, mention that omission
+ |                 here.  Otherwise, state that you were able to include
+ |                 all of the required features in your program.]
+ |
+ |   Known Bugs:  [If you know of any problems with the code, provide
+ |                details here, otherwise clearly state that you know
+ |                of know logic errors.]
+ |
+ *===========================================================================*/

@@ -2,7 +2,6 @@ import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException;
 
-
 class Deck {
     private int[] deck;     // stores the 28 cards
     private File deckFile;  // store deck file reference
@@ -11,13 +10,17 @@ class Deck {
     Deck() {
 
     }
-
     void setDeck(String deckFilePath) {
         this.deck = new int[28];
         this.deckFile = new File(deckFilePath);
         readDeckFile();
     }
 
+    void setNewDeck(int[] newDeck){
+        this.deck = newDeck;
+    }
+
+    // Reads deck file and populates the deck array
     void readDeckFile() {
         if (!deckFile.exists()) {
             System.out.println("Error: deck file not found: " + deckFile.getName());
@@ -28,7 +31,7 @@ class Deck {
             int i = 0;
             while (deckScanner.hasNext() && i < 28) {
                 String card = deckScanner.next();
-                deck[i] = cardToNumber(card); 
+                deck[i] = cardToNumber(card);  // assuming you wrote this method
                 i++;
             }
 
@@ -85,59 +88,13 @@ class Deck {
         deck = newDeck;
     }
 
-    void moveJokerA(){
-        int jokerIndexA = findIndex(27);
-            if (jokerIndexA == 27) {
-                swap(jokerIndexA, 0);
-            } 
-            else {
-                swap(jokerIndexA, jokerIndexA + 1);
-            }
+
+    void setDeck(int[] newDeck) {
+        if (newDeck == null || newDeck.length != 28) {
+            System.out.println("Deck must have exactly 28 cards.");
+        }
+        this.deck = newDeck;
     }
-
-    void moveJokerB(){
-        for (int step = 0; step < 2; step++) {
-            int jokerIndexB = findIndex(28);
-                if (jokerIndexB == 27) {
-                    swap(jokerIndexB, 0);
-                } else {
-                    swap(jokerIndexB, jokerIndexB + 1);
-                }
-            }
-    }
-
-    void tripleCut(){
-        int index27 = findIndex(27);
-        int index28 = findIndex(28);
-        int firstJoker = Math.min(index27, index28);
-        int secondJoker = Math.max(index27, index28);
-        swapSlice(0, firstJoker - 1, secondJoker + 1, 27);
-    }
-
-
-    void countCut(){
-        int bottomCard = deck[27];
-            if (bottomCard != 27 && bottomCard != 28) {
-                int[] newDeck = new int[28];
-                int index = 0;
-
-                for (int ii = bottomCard; ii < 27; ii++) {
-                    newDeck[index++] = deck[ii];
-                }
-                for (int ii = 0; ii < bottomCard; ii++) {
-                    newDeck[index++] = deck[ii];
-                }
-                newDeck[27] = deck[27];
-            }
-    }
-
-
-   // void setDeck(int[] newDeck) {
-     //   if (newDeck == null || newDeck.length != 28) {
-      //     System.out.println("Deck must have exactly 28 cards.");
-      //  }
-       // this.deck = newDeck;
-    //}
 
     private int cardToNumber(String card) {
         switch (card.toUpperCase()) {
@@ -173,7 +130,7 @@ class Deck {
             case "JB": return 28;
 
             default:
-                return 0;
+                throw new IllegalArgumentException("Unknown card: " + card);
         }
     }
 

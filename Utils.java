@@ -1,9 +1,9 @@
 
 class Utils {
 
-    static String numberToLetterString(int n) {
+    static String numberToLetter(int n) {
         if (n < 1 || n > 26) {
-            throw new IllegalArgumentException("Number must be between 1 and 26");
+            System.out.println("Number must be between 1 and 26");
         }
         return String.valueOf((char) ('A' + n - 1));
     }

@@ -4,6 +4,7 @@ import java.io.PrintWriter;
 import java.io.IOException;
 
 class Encrypt {
+    String[][] encryptedMsg;
 
     public static void main(String[] args) {
         if (args.length != 2) {
@@ -20,7 +21,8 @@ class Encrypt {
         msg.setMessage(messagePath);
 
         Keystream keystream = new Keystream();
-        keystream.setKeyStream(msg.getNumbers(),deck);
+        List<int[]> numericMsg = msg.getNumbers();
+        keystream.setKeyStream(numericMsg,deck);
 
         String[][] encryptedMessage = encryptMessages(msg, keystream);
 
@@ -33,7 +35,7 @@ class Encrypt {
             }
             System.out.println("Encrypted message written to encryptedMessage.txt");
         } catch (IOException e) {
-            System.out.println("Error writing to file: " + e.getMessage());
+            System.out.println("Error writing to file");
         }
     }
 
@@ -42,14 +44,14 @@ class Encrypt {
         String[][] encryptedMessage = new String[numbersList.size()][];
 
         for (int i = 0; i < numbersList.size(); i++) {
-            int[] numbers = numbersList.get(i);  // get the i-th numeric message
+            int[] numbers = numbersList.get(i); 
             encryptedMessage[i] = new String[numbers.length];
 
             for (int j = 0; j < numbers.length; j++) {
                 int encryptedNumbers = numbers[j] + keystream.getValues()[i][j];
                 int modSum = encryptedNumbers % 26;
                 if (modSum == 0) modSum = 26;
-                encryptedMessage[i][j] = Utils.numberToLetterString(modSum);
+                encryptedMessage[i][j] = message.numberToLetter(modSum);
             }
         }
 
