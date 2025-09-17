@@ -8,14 +8,12 @@ class Deck {
     private int[] deck;     // stores the 28 cards
     private File deckFile;  // store deck file reference
 
-    // Constructor
     Deck(String deckFilePath) {
         this.deck = new int[28];
         this.deckFile = new File(deckFilePath);
         readDeckFile();
     }
 
-    // Reads deck file and populates the deck array
     void readDeckFile() {
         if (!deckFile.exists()) {
             System.out.println("Error: deck file not found: " + deckFile.getName());
@@ -26,7 +24,7 @@ class Deck {
             int i = 0;
             while (deckScanner.hasNext() && i < 28) {
                 String card = deckScanner.next();
-                deck[i] = cardToNumber(card);  // assuming you wrote this method
+                deck[i] = cardToNumber(card); 
                 i++;
             }
 
@@ -46,7 +44,7 @@ class Deck {
         deck[j] = temp;
     }
 
-    int findIndex(int value){ //indexof
+    int findIndex(int value){ 
         for (int i = 0; i < deck.length; i++) {
             if (deck[i] == value) {
                 return i;  
@@ -83,6 +81,33 @@ class Deck {
         deck = newDeck;
     }
 
+    void moveJoker27(){
+        int jokerIndexA = findIndex(27);
+        if (jokerIndexA == 27) {
+            swap(jokerIndexA, 0);
+        } else {
+            swap(jokerIndexA, jokerIndexA + 1);
+        }
+    }
+
+    void moveJoker28(){
+        for (int step = 0; step < 2; step++) {
+        int jokerIndexB = findIndex(28);
+        if (jokerIndexB == 27) {
+            swap(jokerIndexB, 0);
+        } else {
+            swap(jokerIndexB, jokerIndexB + 1);
+        }
+    }
+    }
+
+    void tripleCut(){
+        int index27 = findIndex(27);
+        int index28 = findIndex(28);
+        int firstJoker = Math.min(index27, index28);
+        int secondJoker = Math.max(index27, index28);
+        swapSlice(0, firstJoker - 1, secondJoker + 1, 27);
+    }
 
     void setDeck(int[] newDeck) {
         if (newDeck == null || newDeck.length != 28) {
