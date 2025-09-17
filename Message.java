@@ -99,8 +99,7 @@ class Message {
         return cleanedMessages;
     }
 
-    
-    // Converts a list of cleaned messages into a list of numeric arrays
+
     List<int[]> messageToNumbers(List<String> cleanedMessages) {
         List<int[]> numericMessages = new ArrayList<>();
 

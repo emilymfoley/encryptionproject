@@ -18,28 +18,55 @@
  |                encryptedMessage.txt).
  +-----------------------------------------------------------------------------
  |
- |  Description:  [Describe the program's goal, IN DETAIL.]
+ |  Description: The objective of this program is to implement a simplified 
+ |                version of the Solitaire encryption algorithm. This algorithm 
+ |                uses a deck of 28 playing cards, consisting of clubs and 
+ |                diamond plus two jokers, to generate a keystream of integer 
+ |                values for encrypting and decrypting messages. Messages 
+ |                may contain non alphabetic characters which will be removed
+ |                in pre processing. The program reads a deck file containing 
+ |                an initial permutation of cards and a message file containing 
+ |                one or more messages, generates a keystream according to the 
+ |                steps of the algorithm to permute the deck including joker 
+ |                swaps and triple cuts. The algorithm is executed iteravely, 
+ |                generating one keystream value per letter in the message.
+ |                The deck configuration resulting from one iteration is used 
+ |                as the starting point for the next iteration. The message 
+ |                is encrypted by converting the message letters to numbers 1-26 
+ |                and adding them pairwise with the keystream mod 26, and 
+ |                converting the results back to letters. Decryption is performed
+ |                by generating the same keystream values, subtracting them from
+ |                the numeric message, and converting the resulting numbers 
+ |                back to characters.
+ |
  |                
- |        Input:  One .dat file containing an initial permutation of deck cards
- |                , one .txt file containing the message to be encrypted.
- |               
+ |        Input:  One .dat file containing an initial permutation of a card
+ |                deck containing only clubs and diamonds, one .txt file 
+ |                containing the message to be encrypted.
  |
- |       Output:  [Describe the output that the user should expect the
- |                 program to produce.]
+ |       Output:  Encrypt.java produces a .txt file containing the letters of the
+ |                encrypted message, as well as printing them to the screen. 
+ |                Decrypt.java produces no output but prints the decrypted message
+ |                to the screen.
  |
- |   Techniques:  [Names of standard algorithms employed, explanations
+ |   Techniques:   Data structures used include integer and string arrays to store 
+ |                 deck and keystream values. ArrayLists were used to dynamically 
+                   manage collections of messages in the Message class when reading 
+                   the input message file, since the number of messages in a file 
+                   is not known in advance. No standard algorithms were employed,
+                   since the unusual steps of the solitaire algorithm required 
+                   custom methods.
+                   
+                   [Names of standard algorithms employed, explanations
  |                 of why things were done they way they were done, etc.
  |                 This is the place for technical information that another
  |                 programmer would like to know.]
  |
- |   Required Features Not Included:
- |                [If the assignment specifies a feature that you were
- |                 unable to include in the program, mention that omission
- |                 here.  Otherwise, state that you were able to include
- |                 all of the required features in your program.]
+ |   Required Features Not Included: None
+ |                
  |
- |   Known Bugs:  [If you know of any problems with the code, provide
- |                details here, otherwise clearly state that you know
- |                of know logic errors.]
+ |   Known Bugs:  None
+ |                
+ |                
  |
  *===========================================================================*/

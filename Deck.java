@@ -10,7 +10,6 @@ class Deck {
 
     Deck() {
         this.deck = new int[28];
-        
     }
 
     void setDeck(String deckFilePath){
@@ -116,13 +115,12 @@ class Deck {
 
     void countCut(){
         int[] arr = getDeck();
-        int n = arr.length;
-        int bottomCard = arr[n - 1];
+        int bottomCard = arr[27];
         if (bottomCard != 27 && bottomCard != 28) {
-            int[] newDeck = new int[n];
+            int[] newDeck = new int[28];
             int index = 0;
 
-            for (int ii = bottomCard; ii < n - 1; ii++) {
+            for (int ii = bottomCard; ii < 27; ii++) {
                 newDeck[index++] = arr[ii];
             }
 
@@ -130,7 +128,7 @@ class Deck {
                 newDeck[index++] = arr[ii];
             }
 
-            newDeck[n - 1] = arr[n - 1];
+            newDeck[27] = arr[27];
             this.deck = newDeck;
         }
     }

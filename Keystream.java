@@ -19,7 +19,7 @@ class Keystream {
       
 
             int[] msgNumbers = numericMessages.get(i);       // numeric representation of the i-th message
-            keystreamValues[i] = new int[msgNumbers.length]; // initialize the row
+            keystreamValues[i] = new int[msgNumbers.length];
         
             for (int j = 0; j < msgNumbers.length; j++) {
                     while(true){

@@ -22,9 +22,6 @@ class Decrypt {
     }
 
     static String numberToLetterString(int n) {
-        if (n < 1 || n > 26) {
-            System.out.println("Number must be between 1 and 26");
-        }
         char letter = (char) ('A' + n - 1);
         return Character.toString(letter);  
     }
@@ -35,22 +32,24 @@ class Decrypt {
         keystream.setKeyStream(msg.getNumbers(), deck);
         int[][] keystreamValues = keystream.getValues(); 
         int[][] encryptedNumbers = new int[msg.getNumbers().size()][];
-        List<int[]> messagesNumbers = msg.getNumbers();  // get the List<int[]> for this message
+        List<int[]> messagesNumbers = msg.getNumbers(); 
         encryptedNumbers = new int[messagesNumbers.size()][];
 
         for (int i = 0; i < messagesNumbers.size(); i++) {
-            int[] numbersArray = messagesNumbers.get(i);         // get the int[] at index i
-            encryptedNumbers[i] = new int[numbersArray.length];  // initialize inner array
+            int[] numbersArray = messagesNumbers.get(i);         
+            encryptedNumbers[i] = new int[numbersArray.length]; 
 
             for (int j = 0; j < numbersArray.length; j++) {
                 encryptedNumbers[i][j] = numbersArray[j];        
             }
         }
 
+        System.out.println("Decrypted Messages:");
+        System.out.println("===================");
         for (int i = 0; i < encryptedNumbers.length; i++) {
             for (int j = 0; j < encryptedNumbers[i].length; j++) {
                 int decryptedValue = encryptedNumbers[i][j] - keystreamValues[i][j];
-                if (decryptedValue <= 0) decryptedValue += 26; // wrap around A–Z
+                if (decryptedValue <= 0) decryptedValue += 26; 
                 System.out.print(numberToLetterString(decryptedValue));
             }
             System.out.println();

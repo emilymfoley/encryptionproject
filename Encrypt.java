@@ -20,19 +20,20 @@ class Encrypt {
         Message messages = new Message();
         messages.setMessage(messagePath);
 
-        // Initialize keystream and generate values
+
         Keystream keystream = new Keystream();
         keystream.encryptionAlgorithm(messages.getNumbers(), deck);
 
-        // Encrypt messages
         String[][] encryptedMessage = encryptMessages(messages, keystream);
 
-        // Write encrypted messages to file
         try (PrintWriter writer = new PrintWriter(new FileWriter("encryptedMessage.txt"))) {
+            System.out.println("Encrypted Messages:");
+            System.out.println("===================");
             for (int i = 0; i < encryptedMessage.length; i++) {
                 for (int j = 0; j < encryptedMessage[i].length; j++) {
                     writer.print(encryptedMessage[i][j]);
                 }
+                System.out.println(String.join("", encryptedMessage[i]));
                 writer.println();
             }
             System.out.println("Encrypted message written to encryptedMessage.txt");
