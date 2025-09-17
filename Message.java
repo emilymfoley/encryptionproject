@@ -2,7 +2,7 @@
  ||
  ||  Class Message
  ||
- ||         Author:  Emily Margaret Foley
+ ||         Author:  Emily Foley
  ||
  ||        Purpose:  This class represents messages to be encrypted or
  ||                   decrypted. It is responsible for reading raw input
@@ -71,13 +71,81 @@ class Message {
         this.cleanedMessage = new ArrayList<>();
     }
 
+/*---------------------------------------------------------------------
+ |  Methods SET_MESSAGE, GET_CLEANED_MESSAGE, GET_NUMBERS
+ |
+ |  Purpose:  
+ |      SETMESSAGE -- Initialize the Message object by reading a message
+ |                      file, cleaning its contents (removing non-letter
+ |                      characters and padding to multiples of 5), and
+ |                      converting the cleaned text into numeric
+ |                      representation.
+ |      GETCLEANEDMESSAGE -- Retrieve the list of cleaned message strings.
+ |      GETNUMBERS -- Retrieve the list of numeric arrays corresponding
+ |                      to the cleaned messages.
+ |
+ |  Pre-condition:  
+ |      SETMESSAGE -- messageFilePath points to a valid file containing
+ |                      at least one line of text with letters.
+ |      GETCLEANEDMESSAGE / GETNUMBERS -- The Message object has been
+ |                      initialized by calling setMessage().
+ |
+ |  Post-condition:  
+ |      SETMESSAGE -- The cleanedMessage and numericMessage fields of
+ |                      the Message object are populated based on the
+ |                      input file. 
+ |      GETCLEANEDMESSAGE / GETNUMBERS -- No changes are made; data is
+ |                      returned as-is.
+ |
+ |  Parameters:
+ |      SETMESSAGE: messageFilePath -- path to the input message file.
+ |      GETCLEANEDMESSAGE / GETNUMBERS: None
+ |
+ |  Returns:
+ |      SETMESSAGE: None (void)
+ |      GETCLEANEDMESSAGE: List<String> of cleaned message strings
+ |      GETNUMBERS: List<int[]> of numeric message representations
+ *-------------------------------------------------------------------*/
     void setMessage(String messageFilePath){
         List<String> rawMessage = readMsg(messageFilePath);
         this.cleanedMessage = cleanMessage(rawMessage);
         this.numericMessage = messageToNumbers(this.cleanedMessage);
     }
 
-    static List<String> readMsg(String messageFilePath) {   
+    List<String> getCleanedMessage() {
+        return cleanedMessage;
+    }
+
+    List<int[]> getNumbers() {
+        return numericMessage;
+    }
+/*---------------------------------------------------------------------
+ |  Method READMSG
+ |
+ |  Purpose:  Read a text file containing messages and return a list of
+ |            lines that contain at least one alphabetical character.
+ |            Lines without letters are ignored. This method serves as
+ |            the initial step in preparing messages for encryption or
+ |            decryption by filtering out invalid content.
+ |
+ |  Pre-condition: messageFilePath points to a valid file location. The
+ |                 file may contain multiple lines of text, some of
+ |                 which may be empty or contain only non-letter
+ |                 characters.
+ |
+ |  Post-condition: A list of valid message lines containing letters is
+ |                  returned. The original file remains unchanged.
+ |                  If the file does not exist, is empty, or contains
+ |                  no letters, appropriate error messages are printed.
+ |
+ |  Parameters:
+ |      messageFilePath -- the path to the text file containing messages
+ |
+ |  Returns:  A List<String> containing all lines from the file that
+ |            include at least one letter. Returns null if the file
+ |            does not exist or is empty.
+ *-------------------------------------------------------------------*/
+    private List<String> readMsg(String messageFilePath) {   
         File file = new File(messageFilePath); //object representing the file containing the messages
         List<String> messages = new ArrayList<>(); //Array list of messages read in from input file, before cleaning
 
@@ -105,8 +173,9 @@ class Message {
                         break;
                     }
                 }
-                if (lineHasLetters == false) continue;
-
+                if (lineHasLetters == false) {
+                    continue;
+                }
                 fileHasLetters = true;
                 messages.add(new String(line));
             }
@@ -121,7 +190,29 @@ class Message {
 
         return messages;
     }
-
+/*---------------------------------------------------------------------
+ |  Method CLEANMESSAGE
+ |
+ |  Purpose:  Process a list of raw message strings by removing all
+ |            non-alphabetical characters, converting lowercase letters
+ |            to uppercase, and padding each message with 'X' characters
+ |            so that its length is a multiple of 5. This prepares the
+ |            messages for encryption.
+ |
+ |  Pre-condition: rawMessages is a non-null List of strings, which may
+ |                 contain letters, digits, spaces, and other symbols.
+ |
+ |  Post-condition: Returns a List of cleaned message strings where
+ |                  every string contains only uppercase letters and
+ |                  its length is a multiple of 5. The input list
+ |                  rawMessages remains unchanged.
+ |
+ |  Parameters:
+ |      rawMessages -- String ArrayList containing the original, unprocessed
+ |                     message lines.
+ |
+ |  Returns:  String ArrayList containing the cleaned and padded messages.
+ *-------------------------------------------------------------------*/
     private List<String> cleanMessage(List<String> rawMessages) {
         List<String> cleanedMessages = new ArrayList<>();
 
@@ -155,7 +246,28 @@ class Message {
 
         return cleanedMessages;
     }
-
+/*---------------------------------------------------------------------
+ |  Method MESSAGETONUMBERS
+ |
+ |  Purpose:  Convert a list of cleaned message strings into their
+ |            numeric representations, where 'A' = 1, 'B' = 2, ..., 'Z' = 26.
+ |            This prepares messages for the encryption process, which
+ |            operates on numeric values.
+ |
+ |  Pre-condition: cleanedMessages is a non-null List of strings containing
+ |                 only uppercase letters, with each string length being
+ |                 a multiple of 5.
+ |
+ |  Post-condition: Returns a List of integer arrays representing the
+ |                  numeric values of each character in the messages.
+ |                  The input list cleanedMessages remains unchanged.
+ |
+ |  Parameters:
+ |      cleanedMessages -- List<String> containing cleaned message strings.
+ |
+ |  Returns:  List<int[]> where each array corresponds to a message and
+ |            contains numeric values of its letters.
+ *-------------------------------------------------------------------*/
     private List<int[]> messageToNumbers(List<String> cleanedMessages) {
         List<int[]> numericMessages = new ArrayList<>();
 
@@ -169,16 +281,24 @@ class Message {
 
         return numericMessages;
     }
-
+/*---------------------------------------------------------------------
+ |  Method NUMBERTOLETTER
+ |
+ |  Purpose:  Convert a numeric value in the range 1–26 into its
+ |            corresponding uppercase letter ('A' = 1, 'B' = 2, ..., 'Z' = 26).
+ |            This is used during encryption and decryption to map numeric
+ |            results back to letters.
+ |
+ |  Pre-condition: n is an integer between 1 and 26 inclusive.
+ |
+ |  Post-condition: Returns the corresponding uppercase letter as a string.
+ |
+ |  Parameters:
+ |      n -- integer value representing a letter (1–26)
+ |
+ |  Returns:  String containing the uppercase letter corresponding to n.
+ *-------------------------------------------------------------------*/
     String numberToLetter(int n) {
         return String.valueOf((char) ('A' + n - 1));
-    }
-
-    List<String> getCleanedMessage() {
-        return cleanedMessage;
-    }
-
-    List<int[]> getNumbers() {
-        return numericMessage;
     }
 }
