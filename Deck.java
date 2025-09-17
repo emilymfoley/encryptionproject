@@ -1,12 +1,6 @@
 import java.util.Scanner;
-import java.util.Arrays;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.List;
-import java.util.ArrayList;
-import java.io.FileWriter;
-import java.io.PrintWriter;
-import java.io.IOException;
 
 
 class Deck {
@@ -14,12 +8,15 @@ class Deck {
     private File deckFile;  // store deck file reference
 
     // Constructor
-    Deck(String deckFilePath) {
+    Deck() {
+
+    }
+
+    void setDeck(String deckFilePath) {
         this.deck = new int[28];
         this.deckFile = new File(deckFilePath);
         readDeckFile();
     }
-
     // Reads deck file and populates the deck array
     void readDeckFile() {
         if (!deckFile.exists()) {
