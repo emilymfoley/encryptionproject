@@ -14,11 +14,13 @@ class Encrypt {
         String deckPath = args[0];
         String messagePath = args[1];
 
-        Deck deck = new Deck(deckPath);
+        Deck deck = new Deck();
+        deck.setDeck(deckPath);
         Message msg = new Message();
         msg.setMessage(messagePath);
 
-        Keystream keystream = new Keystream(msg.getNumbers(),deck);
+        Keystream keystream = new Keystream();
+        keystream.setKeyStream(msg.getNumbers(),deck);
 
         String[][] encryptedMessage = encryptMessages(msg, keystream);
 

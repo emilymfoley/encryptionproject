@@ -1,9 +1,5 @@
-import java.util.Scanner;
-import java.util.Arrays;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.List;
-import java.util.ArrayList;
+
 
 class Decrypt {
 
@@ -16,7 +12,8 @@ class Decrypt {
         String deckPath= args[0];
         String encryptedMsgPath = args[1];
 
-        Deck deck = new Deck(deckPath);
+        Deck deck = new Deck();
+        deck.setDeck(deckPath);
 
         Message msg = new Message();
         msg.setMessage(encryptedMsgPath);
@@ -34,7 +31,8 @@ class Decrypt {
 
     static void decryptMessages(Deck deck, Message msg) {
 
-        Keystream keystream = new Keystream(msg.getNumbers(),deck);
+        Keystream keystream = new Keystream();
+        keystream.setKeyStream(msg.getNumbers(),deck);
         int[][] keystreamValues = keystream.getValues(); 
         int[][] encryptedNumbers = new int[msg.getNumbers().size()][];
         List<int[]> messagesNumbers = msg.getNumbers();  // get the List<int[]> for this message
