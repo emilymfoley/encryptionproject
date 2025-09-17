@@ -5,16 +5,23 @@ class Keystream {
 
     int[][] keystreamValues;  //initializing a ragged array representing keystream values
 
-    Keystream(List<Message> messages, Deck deck) {
-        keystreamValues = new int[messages.size()][];  // store the keystream values
+    void setKeyStream(List<int[]> numericMessages, Deck deck){
+        this.keystreamValues = encryptionAlgorithm(numericMessages, deck);
+    }
 
-        for (int i = 0; i < messages.size(); i++) { 
-            Message msg = messages.get(i);
-            int[] numbers = msg.getNumbers();  // numeric representation
-            keystreamValues[i] = new int[numbers.length];
+    Keystream() {
+    }
 
+    int[][] encryptionAlgorithm(List<int[]> numericMessages, Deck deck){
 
-            for (int j = 0; j < numbers.length; j++) {
+        keystreamValues = new int[numericMessages.size()][];
+        for (int i = 0; i < numericMessages.size(); i++) { 
+      
+
+            int[] msgNumbers = numericMessages.get(i);       // numeric representation of the i-th message
+            keystreamValues[i] = new int[msgNumbers.length]; // initialize the row
+        
+            for (int j = 0; j < msgNumbers.length; j++) {
                     while(true){
                         deck.moveJoker27();
                         deck.moveJoker28();
@@ -26,13 +33,17 @@ class Keystream {
                         int next = deck.getDeck()[count];
 
                         if (next != 27 && next != 28) {
-                            keystreamValues[i][j] = next;  // store keystream value
+                            keystreamValues[i][j] = next;  
                             break;
                         }
                     }
                 }
         }
+
+        return keystreamValues;
     }
+
+    
 
   
     int[][] getValues() {

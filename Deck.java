@@ -8,10 +8,15 @@ class Deck {
     private int[] deck;     // stores the 28 cards
     private File deckFile;  // store deck file reference
 
-    Deck(String deckFilePath) {
+    Deck() {
         this.deck = new int[28];
+        
+    }
+
+    void setDeck(String deckFilePath){
         this.deckFile = new File(deckFilePath);
         readDeckFile();
+
     }
 
     void readDeckFile() {

@@ -14,11 +14,15 @@ class Encrypt {
         String deckPath = args[0];
         String messagePath = args[1];
 
-        Deck deck = new Deck(deckPath);
-        List<Message> messages = Message.readMsg(messagePath);
+        Deck deck = new Deck();
+        deck.setDeck(deckPath);
+
+        Message messages = new Message();
+        messages.setMessage(messagePath);
 
         // Initialize keystream and generate values
-        Keystream keystream = new Keystream(messages,deck);
+        Keystream keystream = new Keystream();
+        keystream.encryptionAlgorithm(messages.getNumbers(), deck);
 
         // Encrypt messages
         String[][] encryptedMessage = encryptMessages(messages, keystream);
@@ -37,11 +41,12 @@ class Encrypt {
         }
     }
 
-    static String[][] encryptMessages(List<Message> messages, Keystream keystream) {
-        String[][] encryptedMessage = new String[messages.size()][];
+    static String[][] encryptMessages(Message message, Keystream keystream) {
+        List<int[]> numbersList = message.getNumbers();
+        String[][] encryptedMessage = new String[numbersList.size()][];
 
-        for (int i = 0; i < messages.size(); i++) {
-            int[] numbers = messages.get(i).getNumbers();
+        for (int i = 0; i < numbersList.size(); i++) {
+            int[] numbers = numbersList.get(i); 
             encryptedMessage[i] = new String[numbers.length];
 
             for (int j = 0; j < numbers.length; j++) {

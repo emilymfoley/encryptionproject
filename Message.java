@@ -6,17 +6,23 @@ import java.util.ArrayList;
 
 
 class Message {
-    private int[] numericMessage;   // Field declaration of numeric representation of a message
-    private String cleanedMessage;  // Field declaration of the message after non-alphabetical characters are removed
+    private List<int[]> numericMessage;   // Field declaration of numeric representation of a message
+    private List<String> cleanedMessage;  // Field declaration of the message after non-alphabetical characters are removed
 
-    Message(String messageFilePath) { //messageFilePath: the file path of the message file
-        this.cleanedMessage = cleanMessage(messageFilePath);
+    Message() {
+        this.numericMessage = new ArrayList<>();
+        this.cleanedMessage = new ArrayList<>();
+    }
+
+    void setMessage(String messageFilePath){
+        List<String> rawMessage = readMsg(messageFilePath);
+        this.cleanedMessage = cleanMessage(rawMessage);
         this.numericMessage = messageToNumbers(this.cleanedMessage);
     }
 
-    static List<Message> readMsg(String messageFilePath) {   
+    static List<String> readMsg(String messageFilePath) {   
         File file = new File(messageFilePath); //object representing the file containing the messages
-        List<Message> messages = new ArrayList<>(); //Array list of messages read in from input file, before cleaning
+        List<String> messages = new ArrayList<>(); //Array list of messages read in from input file, before cleaning
 
         if (!file.exists()) { 
             System.out.println("Error: message file not found: " + messageFilePath);
@@ -45,7 +51,7 @@ class Message {
                 if (lineHasLetters == false) continue;
 
                 fileHasLetters = true;
-                messages.add(new Message(line));
+                messages.add(new String(line));
             }
 
             if (!fileHasLetters) { 
@@ -59,48 +65,61 @@ class Message {
         return messages;
     }
 
-    private String cleanMessage(String inputMessage) {
+    List<String> cleanMessage(List<String> rawMessages) {
+        List<String> cleanedMessages = new ArrayList<>();
 
-        if (inputMessage == null) return "";
+        for (String inputMessage : rawMessages) {
+            if (inputMessage == null) continue;
 
-        StringBuilder cleanedMsg = new StringBuilder(); //initialize a stringBuilder object to be filled with cleaned messages
+            StringBuilder cleanedMsg = new StringBuilder();
 
-        for (int i = 0; i < inputMessage.length(); i++) {
-            char c = inputMessage.charAt(i);
+            for (int i = 0; i < inputMessage.length(); i++) {
+                char c = inputMessage.charAt(i);
 
-            if (c >= 'a' && c <= 'z') {
-                c = (char)(c - 'a' + 'A');
+                if (c >= 'a' && c <= 'z') {
+                    c = (char) (c - 'a' + 'A');
+                }
+
+                if (c >= 'A' && c <= 'Z') {
+                    cleanedMsg.append(c);
+                }
             }
 
-            if (c >= 'A' && c <= 'Z') {
-                cleanedMsg.append(c);
+            int remainder = cleanedMsg.length() % 5;
+            if (remainder != 0) {
+                int padding = 5 - remainder;
+                for (int i = 0; i < padding; i++) {
+                    cleanedMsg.append('X');
+                }
             }
+
+            cleanedMessages.add(cleanedMsg.toString());
         }
 
-        int remainder = cleanedMsg.length() % 5; //number of X's required for the message length to be a multiple of 5
-        if (remainder != 0) {
-            int padding = 5 - remainder;
-            for (int i = 0; i < padding; i++) {
-                cleanedMsg.append('X');
-            }
-        }
-
-        return cleanedMsg.toString();
+        return cleanedMessages;
     }
 
-    int[] messageToNumbers(String cleanedMessage) {
-        int[] numericMsg = new int[cleanedMessage.length()]; //initializing ragged array to contain numeric representation of messages
-        for (int i = 0; i < cleanedMessage.length(); i++) {
-            numericMsg[i] = cleanedMessage.charAt(i) - 'A' + 1;
+    
+    // Converts a list of cleaned messages into a list of numeric arrays
+    List<int[]> messageToNumbers(List<String> cleanedMessages) {
+        List<int[]> numericMessages = new ArrayList<>();
+
+        for (String cleanedMessage : cleanedMessages) {
+            int[] numericMsg = new int[cleanedMessage.length()];
+            for (int i = 0; i < cleanedMessage.length(); i++) {
+                numericMsg[i] = cleanedMessage.charAt(i) - 'A' + 1;
+            }
+            numericMessages.add(numericMsg);
         }
-        return numericMsg;
+
+        return numericMessages;
     }
 
-    String getCleanedMessage() {
+    List<String> getCleanedMessage() {
         return cleanedMessage;
     }
 
-    int[] getNumbers() {
+    List<int[]> getNumbers() {
         return numericMessage;
     }
 }
