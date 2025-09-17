@@ -4,7 +4,6 @@ import java.io.PrintWriter;
 import java.io.IOException;
 
 class Encrypt {
-    String[][] encryptedMsg;
 
     public static void main(String[] args) {
         if (args.length != 2) {
@@ -15,17 +14,16 @@ class Encrypt {
         String deckPath = args[0];
         String messagePath = args[1];
 
-        Deck deck = new Deck();
-        deck.setDeck(deckPath);
-        Message msg = new Message();
-        msg.setMessage(messagePath);
+        Deck deck = new Deck(deckPath);
+        List<Message> messages = Message.readMsg(messagePath);
 
-        Keystream keystream = new Keystream();
-        List<int[]> numericMsg = msg.getNumbers();
-        keystream.setKeyStream(numericMsg,deck);
+        // Initialize keystream and generate values
+        Keystream keystream = new Keystream(messages,deck);
 
-        String[][] encryptedMessage = encryptMessages(msg, keystream);
+        // Encrypt messages
+        String[][] encryptedMessage = encryptMessages(messages, keystream);
 
+        // Write encrypted messages to file
         try (PrintWriter writer = new PrintWriter(new FileWriter("encryptedMessage.txt"))) {
             for (int i = 0; i < encryptedMessage.length; i++) {
                 for (int j = 0; j < encryptedMessage[i].length; j++) {
@@ -35,23 +33,22 @@ class Encrypt {
             }
             System.out.println("Encrypted message written to encryptedMessage.txt");
         } catch (IOException e) {
-            System.out.println("Error writing to file");
+            System.out.println("Error writing to file: " + e.getMessage());
         }
     }
 
-    static String[][] encryptMessages(Message message, Keystream keystream) {
-        List<int[]> numbersList = message.getNumbers();
-        String[][] encryptedMessage = new String[numbersList.size()][];
+    static String[][] encryptMessages(List<Message> messages, Keystream keystream) {
+        String[][] encryptedMessage = new String[messages.size()][];
 
-        for (int i = 0; i < numbersList.size(); i++) {
-            int[] numbers = numbersList.get(i); 
+        for (int i = 0; i < messages.size(); i++) {
+            int[] numbers = messages.get(i).getNumbers();
             encryptedMessage[i] = new String[numbers.length];
 
             for (int j = 0; j < numbers.length; j++) {
                 int encryptedNumbers = numbers[j] + keystream.getValues()[i][j];
                 int modSum = encryptedNumbers % 26;
                 if (modSum == 0) modSum = 26;
-                encryptedMessage[i][j] = message.numberToLetter(modSum);
+                encryptedMessage[i][j] = Utils.numberToLetter(modSum);
             }
         }
 

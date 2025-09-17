@@ -2,22 +2,17 @@ import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException;
 
+
+
 class Deck {
     private int[] deck;     // stores the 28 cards
     private File deckFile;  // store deck file reference
 
     // Constructor
-    Deck() {
-
-    }
-    void setDeck(String deckFilePath) {
+    Deck(String deckFilePath) {
         this.deck = new int[28];
         this.deckFile = new File(deckFilePath);
         readDeckFile();
-    }
-
-    void setNewDeck(int[] newDeck){
-        this.deck = newDeck;
     }
 
     // Reads deck file and populates the deck array
@@ -130,7 +125,7 @@ class Deck {
             case "JB": return 28;
 
             default:
-                throw new IllegalArgumentException("Unknown card: " + card);
+                return 0;
         }
     }
 

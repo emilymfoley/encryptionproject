@@ -1,56 +1,45 @@
-import java.util.Scanner;
-import java.util.Arrays;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.List;
-import java.util.ArrayList;
 
+
+// Decrypt.java (same package/folder)
+    // Converts 1-26 to corresponding letter
 class Decrypt {
 
-    public static void main(String[] args) {
-        if (args.length != 2) {
-            System.out.println("Usage: java Decrypt <deckFile> <encryptedMessageFile>");
-            return;
-        }
-
-        String deckPath= args[0];
-        String encryptedMsgPath = args[1];
-
-        Deck deck = new Deck();
-        deck.setDeck(deckPath);
-
-        Message msg = new Message();
-        msg.setMessage(encryptedMsgPath);
-
-        decryptMessages(deck, msg);
-    }
-
+    // Converts 1-26 to corresponding letter
     static String numberToLetterString(int n) {
         if (n < 1 || n > 26) {
             System.out.println("Number must be between 1 and 26");
         }
         char letter = (char) ('A' + n - 1);
-        return Character.toString(letter);  
+        return Character.toString(letter);  // Convert char to String
     }
 
-    static void decryptMessages(Deck deck, Message msg) {
 
-        Keystream keystream = new Keystream();
-        keystream.setKeyStream(msg.getNumbers(), deck);
-        int[][] keystreamValues = keystream.getValues(); 
-        int[][] encryptedNumbers = new int[msg.getNumbers().size()][];
-        List<int[]> messagesNumbers = msg.getNumbers();  // get the List<int[]> for this message
-        encryptedNumbers = new int[messagesNumbers.size()][];
+    // New method to do the decryption
+    static void decryptMessages(String deckPath, String messagePath) {
+        // Load deck
+        Deck deck = new Deck(deckPath);
 
-        for (int i = 0; i < messagesNumbers.size(); i++) {
-            int[] numbersArray = messagesNumbers.get(i);         // get the int[] at index i
-            encryptedNumbers[i] = new int[numbersArray.length];  // initialize inner array
+        // Read messages
+        List<Message> messages = Message.readMsg(messagePath);
 
-            for (int j = 0; j < numbersArray.length; j++) {
-                encryptedNumbers[i][j] = numbersArray[j];        
+        // Create keystream
+        Keystream ks = new Keystream(messages, deck);
+        int[][] keystreamValues = ks.getValues(); 
+        int[][] encryptedNumbers = new int[messages.size()][];
+
+        // Convert messages to numbers
+        for (int i = 0; i < messages.size(); i++) {
+            Message msg = messages.get(i);
+            int[] numbers = msg.getNumbers();  
+            encryptedNumbers[i] = new int[numbers.length];
+            for (int j = 0; j < numbers.length; j++) {
+                encryptedNumbers[i][j] = numbers[j];
             }
         }
 
+
+        // Decrypt
         for (int i = 0; i < encryptedNumbers.length; i++) {
             for (int j = 0; j < encryptedNumbers[i].length; j++) {
                 int decryptedValue = encryptedNumbers[i][j] - keystreamValues[i][j];
@@ -61,4 +50,12 @@ class Decrypt {
         }
     }
 
+    // main just calls the method
+    public static void main(String[] args) {
+        if (args.length != 2) {
+            System.out.println("Usage: java Decrypt <deckFile> <encryptedMessageFile>");
+            return;
+        }
+        decryptMessages(args[0], args[1]);
+    }
 }

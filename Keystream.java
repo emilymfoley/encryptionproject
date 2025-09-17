@@ -5,22 +5,19 @@ class Keystream {
 
     int[][] keystreamValues;  //initializing a ragged array representing keystream values
 
-    Keystream() {
+    Keystream(List<Message> messages, Deck deck) {
+        keystreamValues = new int[messages.size()][];  // store the keystream values
 
-    }
+        for (int i = 0; i < messages.size(); i++) { 
+            Message msg = messages.get(i);
+            int[] numbers = msg.getNumbers();  // numeric representation
+            keystreamValues[i] = new int[numbers.length];
 
-    void setKeyStream(List<int[]> numericMessages, Deck deck){
-        this.keystreamValues = encryptionAlgorithm(numericMessages, deck);
-    }
 
-    int[][] encryptionAlgorithm(List<int[]> numericMessages, Deck deck){
-        keystreamValues = new int[numericMessages.size()][];
+            for (int j = 0; j < numbers.length; j++) {
 
-        for (int i = 0; i < numericMessages.size(); i++) { 
-            int[] msgNumbers = numericMessages.get(i);       // numeric representation of the i-th message
-            keystreamValues[i] = new int[msgNumbers.length]; // initialize the row
+                while (true) {
 
-            for (int j = 0; j < msgNumbers.length; j++) {
                     // --- Step 1: Move Joker A (27) ---
                     int jokerIndexA = deck.findIndex(27);
                     if (jokerIndexA == deck.getDeck().length - 1) {
@@ -48,7 +45,7 @@ class Keystream {
 
                     // --- Step 4: Count cut ---
                     int[] arr = deck.getDeck();
-                    int n = 28;
+                    int n = arr.length;
                     int bottomCard = arr[n - 1];
                     if (bottomCard != 27 && bottomCard != 28) {
                         int[] newDeck = new int[n];
@@ -57,12 +54,15 @@ class Keystream {
                         for (int ii = bottomCard; ii < n - 1; ii++) {
                             newDeck[index++] = arr[ii];
                         }
+
                         for (int ii = 0; ii < bottomCard; ii++) {
                             newDeck[index++] = arr[ii];
                         }
+
                         newDeck[n - 1] = arr[n - 1];
-                        deck.setNewDeck(newDeck);
+                        deck.setDeck(newDeck);
                     }
+
 
                     // --- Step 5: Output keystream value ---
                     int topCardValue = deck.getDeck()[0];
@@ -73,12 +73,11 @@ class Keystream {
                         keystreamValues[i][j] = next;  // store keystream value
                         break;
                     }
+                }
+
             }
         }
-    return keystreamValues;
-}
-
-
+    }
 
   
     int[][] getValues() {
