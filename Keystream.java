@@ -19,29 +19,8 @@ class Keystream {
                         deck.moveJoker27();
                         deck.moveJoker28();
                         deck.tripleCut();
+                        deck.countCut();
 
-                        // --- Step 4: Count cut ---
-                        int[] arr = deck.getDeck();
-                        int n = arr.length;
-                        int bottomCard = arr[n - 1];
-                        if (bottomCard != 27 && bottomCard != 28) {
-                            int[] newDeck = new int[n];
-                            int index = 0;
-
-                            for (int ii = bottomCard; ii < n - 1; ii++) {
-                                newDeck[index++] = arr[ii];
-                            }
-
-                            for (int ii = 0; ii < bottomCard; ii++) {
-                                newDeck[index++] = arr[ii];
-                            }
-
-                            newDeck[n - 1] = arr[n - 1];
-                            deck.setDeck(newDeck);
-                        }
-
-
-                        // --- Step 5: Output keystream value ---
                         int topCardValue = deck.getDeck()[0];
                         int count = (topCardValue >= 27) ? 27 : topCardValue;
                         int next = deck.getDeck()[count];
@@ -50,7 +29,7 @@ class Keystream {
                             keystreamValues[i][j] = next;  // store keystream value
                             break;
                         }
-                }
+                    }
                 }
         }
     }

@@ -109,6 +109,27 @@ class Deck {
         swapSlice(0, firstJoker - 1, secondJoker + 1, 27);
     }
 
+    void countCut(){
+        int[] arr = getDeck();
+        int n = arr.length;
+        int bottomCard = arr[n - 1];
+        if (bottomCard != 27 && bottomCard != 28) {
+            int[] newDeck = new int[n];
+            int index = 0;
+
+            for (int ii = bottomCard; ii < n - 1; ii++) {
+                newDeck[index++] = arr[ii];
+            }
+
+            for (int ii = 0; ii < bottomCard; ii++) {
+                newDeck[index++] = arr[ii];
+            }
+
+            newDeck[n - 1] = arr[n - 1];
+            this.deck = newDeck;
+        }
+    }
+
     void setDeck(int[] newDeck) {
         if (newDeck == null || newDeck.length != 28) {
             System.out.println("Deck must have exactly 28 cards.");
